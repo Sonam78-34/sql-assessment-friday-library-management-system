@@ -1,0 +1,284 @@
+create database LMS_DB
+
+use LMS_DB
+
+create table LMS_Member
+(member_id varchar(20) primary key,
+member_name varchar(30),
+city varchar(20),
+date_register date,
+date_expire date,
+membership_status varchar(15));
+
+select * from LMS_Member
+
+insert into LMS_Member values ('lm001','amit','chennai', '2012-02-12','2013-02-11','temporary'),
+ ('lm002','abdhul', 'delhi', '2012-04-10','2013-04-09', 'temporary'),
+('lm003','gayan','chennai', '2012-05-13','2013-05-12','permanent'),
+('lm004','radha','chennai', '2012-04-22','2013-04-21','temporary'),
+('lm005','guru','bangalore', '2012-03-30','2013-05-16','temporary'),
+('lm006','mohon','chennai', '2012-04-12','2013-05-16','temporary');
+
+
+
+
+
+--second table
+
+create table LMS_SUPPLIERS_DETAILS
+( supplier_id varchar(10) primary key,
+supplier_name varchar(40),
+address varchar(50),
+contact integer ,
+email varchar(30))
+
+
+insert into LMS_SUPPLIERS_DETAILS values ('s01', 'singapore shoppee', 'chennai', 98941235, 'sing@gmail.com'),
+('s02', 'jk stores', 'mumbai', 99401234, 'jks@yahoo.com'),
+('s03', 'rose book store', 'trivandrum', 94444112, 'rose@gmail.com'),
+('s04', 'kavari store', 'delhi', 86300014, 'kavi@redif.com'),
+('s05', 'einsten book gallery', 'us', 95420000, 'eingal@aol.com'),
+('s06', 'akbar store', 'mumbai', 78556231, 'akbakst@aol.com');
+
+select * from LMS_SUPPLIERS_DETAILS;
+
+
+
+
+
+--3rd table
+
+create table LMS_FINE_DETAILS
+(fine_range varchar(4) primary key,
+fine_amount DECIMAL(10,2)
+);
+
+insert into LMS_FINE_DETAILS VALUES ('r0', 0.00),
+('r1', 20.00),
+('r2', 50.00),
+('r3', 75.00),
+('r4', 100.00),
+('r5',150.00),
+('r6', 200.00);
+
+select * from LMS_FINE_DETAILS;
+
+
+
+
+
+--4th table
+ 
+  
+ create table LMS_BOOK_DETAILS
+ (
+ book_code varchar(15) primary key, 
+ book_title varchar(60), 
+ category varchar(25), author varchar(40), publication varchar(40), publish_date date , book_edition  int, price decimal(8,2), 
+ c varchar(5), date_arrival date, supplier_id varchar(10)); 
+
+
+ select * from LMS_BOOK_DETAILS
+
+ insert into LMS_BOOK_DETAILS values 
+ ( 'bl000010', 'java frovdummies', 'java', 'paul j. deitel', 'prentice hall', '1992-12-10', 6, 575.00, 'a1', '2011-05-10', 's01'),
+ ( 'bl000002', 'java: the complete  r', 'java',  'herbert schildt', 'tata mcgraw hill', '2011-10-10', 5, 750.00, 'a1', '2011-05-10', 's03'),
+ ( 'bl000003', 'java: how to do prog', 'java', 'paul j. deitel', 'prentice hall', '1999-05-10', 6, 600.00, 'a1', '2012-05-10', 's01'),
+ ( 'bl000004', 'java: the complete r', 'java', 'herbert schildt', 'tata mcgraw hill', '2011-10-10', 5, 750.00, 'a1', '2012-05-11', 's01'),
+ ( 'bl000005', 'java: how to do prog', 'java', 'paul j. deitel', 'prentice hall', '1999-12-10', 6, 600.00, 'a1', '2012-05-11', 's01'),
+ ( 'bl000006', 'java: the complete r', 'java', 'herbert schildt', 'tata mcgraw hill', '2011-10-10', 6, 750.00, 'a1', '2012-05-12', 's03'),
+
+
+ ('bl000007', 'let us c', 'c', 'yashwant kantekar', 'bpb publication', '2010-12-11', 9, 500.00, 'a3', '2011-11-13', 's03'),
+ ('bl000008', 'let us c', 'c', 'yashwant kantekar', 'bpb publication', '2010-05-12', 9, 500.00, 'a3', '2011-08-09', 's04'),
+('bl000009', 'let us c#', 'c', 'yashwant kantekar', 'bpb publication', '2010-05-12', 9, 550.00, 'a3', '2011-08-09', 's04'),
+('bl0000011', 'let us c++', 'c', 'yashwant kantekar', 'bpb publication', '2010-05-12', 9, 650.00, 'a3', '2011-08-09', 's04');
+
+update  LMS_BOOK_DETAILS
+set  book_code= 'bl000011' where book_code ='bl0000011'
+
+
+-- 5th table
+
+create table LMS_BOOK_ISSUES
+( book_issue_no int primary key, 
+member_id varchar(20), 
+book_code varchar(15), 
+date_issue date , 
+date_return date, 
+date_returned date,
+    fine_range varchar(4),
+  foreign key (member_id) references LMS_Member(member_id),
+  foreign key (book_code) references LMS_BOOK_DETAILS(book_code),
+   foreign key (fine_range) references LMS_FINE_DETAILS(fine_range))
+  
+
+  insert into LMS_BOOK_ISSUES VALUES
+  ( 1, 'lm001', 'bl000010', '2012-05-01', '2012-05-16', '2012-05-16', 'r0'),
+  ( 2, 'lm002', 'bl000002', '2012-05-01', '2012-05-06', '2012-05-16', 'r2'),
+  ( 3, 'lm003', 'bl000007', '2012-04-01', '2012-04-16', '2012-04-20', 'r1'),
+  ( 4, 'lm004', 'bl000005', '2012-04-01', '2012-04-16', '2012-04-20', 'r1'),
+  ( 5, 'lm001', 'bl000010', '2012-03-30', '2012-04-15', '2012-04-20', 'r0'),
+  ( 6, 'lm001', 'bl000010', '2012-04-20', '2012-05-05','2012-05-05', 'r0'),
+  ( 7, 'lm001', 'bl000010', '2012-04-22', '2012-05-07','2012-05-25', 'r4');
+
+
+  select * from LMS_BOOK_ISSUES
+ 
+
+
+
+
+
+ --2
+ SELECT * FROM LMS_FINE_DETAILS
+
+ --3
+
+ select * from lms_member
+ SELECT member_name FROM LMS_Member WHERE city= 'chennai';
+
+
+ --4
+ select * from LMS_member
+
+ select member_id, member_name, city , membership_status from LMS_Member where membership_status='permanent';
+
+
+ --5
+ select m.member_id, m.member_name from LMS_member m 
+ join  LMS_BOOK_ISSUES  i on m.member_id= i.member_id
+ where i.book_code= 'bl000002';
+
+
+ --6
+SELECT Book_Code, Book_Title, Author
+FROM LMS_BOOK_DETAILS
+WHERE Author LIKE 'P%';
+
+
+--7
+SELECT COUNT(*) AS NO_OF_BOOKS
+FROM LMS_BOOK_DETAILS
+WHERE Category = 'Java';
+
+
+--8
+
+SELECT Category, COUNT(*) AS NO_OF_BOOKS
+FROM LMS_BOOK_DETAILS
+GROUP BY Category;
+
+
+--9
+SELECT COUNT(*) AS NO_OF_BOOKS
+FROM LMS_BOOK_DETAILS
+WHERE Publication = 'Prentice Hall';
+
+
+
+--10
+SELECT * FROM LMS_BOOK_ISSUES
+SELECT * FROM  LMS_BOOK_DETAILS
+
+SELECT B.Book_Code, B.Book_Title
+FROM LMS_BOOK_ISSUES I
+JOIN LMS_BOOK_DETAILS B ON I.Book_CODE = B.Book_CODE
+WHERE I.Date_Issue = '2012-04-01';
+
+
+
+--11
+SELECT Member_ID, Member_Name, date_register, date_expire
+FROM LMS_MEMBER
+WHERE date_expire < '2013-04-01';
+
+
+--12
+SELECT Member_ID, Member_Name, date_register, Membership_Status
+FROM LMS_MEMBER
+WHERE date_register < '2012-03-01' AND Membership_Status = 'Temporary';
+
+
+--13
+SELECT Member_ID, Member_Name
+FROM LMS_MEMBER
+WHERE City IN ('Chennai', 'Delhi');
+
+
+
+--14
+SELECT CONCAT(Book_Title, ' is written by ', Author) AS Concatenated_Info
+FROM LMS_BOOK_DETAILS
+
+
+--15
+SELECT AVG(Price) AS AVERAGEPRICE
+FROM LMS_BOOK_DETAILS
+WHERE Category = 'JAVA';
+
+
+
+---16
+
+
+
+SELECT Supplier_ID, Supplier_Name, Email
+FROM LMS_SUPPLIERS_DETAILS
+WHERE Email LIKE '%@gmail.com';
+
+
+
+---18
+SELECT M.Member_ID, M.Member_Name, B.Book_Code, B.Book_Title
+FROM LMS_MEMBER M
+JOIN LMS_BOOK_ISSUES I ON M.Member_ID = I.Member_ID
+JOIN LMS_BOOK_DETAILS B ON I.Book_code = B.book_code;
+
+
+---19
+SELECT M.Member_ID, M.Member_Name,F.Fine_Range, F.Fine_Amount FROM LMS_FINE_DETAILS F join LMS_BOOK_ISSUE I ON I.fine_range= F.fine_range
+JOIN LMS_Member M ON M.member_id= I.member_id
+WHERE Fine_Amount < 100;
+
+
+
+--20
+
+select book_code, book_title, rack_num from LMS_BOOK_DETAILS where rack_num='a1' order by book_title asc; 
+
+
+--21
+select member_id, member_name, date_register from LMS_Member WHERE member_id NOT IN ( SELECT member_id FROM LMS_BOOK_ISSUE);
+
+--22
+
+
+
+
+
+
+--26
+SELECT  * FROM  LMS_SUPPLIERS_DETAILS   LIMIT  3 ;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
